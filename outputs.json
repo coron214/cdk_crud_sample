@@ -1,0 +1,9 @@
+{
+  "CdkCrudStack": {
+    "ApiUrl": "https://fejl332auf.execute-api.ap-northeast-1.amazonaws.com/prod/",
+    "OpenApiExport": "https://fejl332auf.execute-api.ap-northeast-1.amazonaws.com/prod/_doc",
+    "WebsiteUrl": "http://cdkcrudstack-websitebucket75c24d94-akbgd6ywvyun.s3-website-ap-northeast-1.amazonaws.com",
+    "ItemsApiEndpointE9939A7D": "https://fejl332auf.execute-api.ap-northeast-1.amazonaws.com/prod/",
+    "SwaggerUrl": "https://fejl332auf.execute-api.ap-northeast-1.amazonaws.com/prod/_doc"
+  }
+}

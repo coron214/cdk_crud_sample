@@ -113,5 +113,13 @@ export class CdkCrudStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, 'ApiUrl', { value: api.url });
     new cdk.CfnOutput(this, 'WebsiteUrl', { value: websiteBucket.bucketWebsiteUrl });
+    new cdk.CfnOutput(this, 'SwaggerUrl', { 
+      value: `${api.url}_doc`,
+      description: 'Swagger UI URL (append stage name if needed)'
+    });
+    new cdk.CfnOutput(this, 'OpenApiExport', { 
+      value: `https://${api.restApiId}.execute-api.${this.region}.amazonaws.com/${api.deploymentStage.stageName}/_doc`,
+      description: 'OpenAPI specification endpoint'
+    });
   }
 }

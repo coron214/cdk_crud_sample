@@ -1,14 +1,37 @@
-# Welcome to your CDK TypeScript project
+# CDK CRUD アプリケーション
 
-This is a blank project for CDK development with TypeScript.
+TypeScriptを使用したAWS CDKプロジェクトです。
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## アーキテクチャ
 
-## Useful commands
+このプロジェクトは以下のAWSリソースで構成されています：
 
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `npx cdk deploy`  deploy this stack to your default AWS account/region
-* `npx cdk diff`    compare deployed stack with current state
-* `npx cdk synth`   emits the synthesized CloudFormation template
+- **DynamoDB**: アイテムデータの保存
+- **Lambda**: CRUD操作のハンドラー
+- **API Gateway**: RESTful APIエンドポイント
+- **S3**: 静的Webサイトホスティングとファイルストレージ
+
+## 主要なコマンド
+
+* `npm run build`   TypeScriptをJavaScriptにコンパイル
+* `npm run watch`   変更を監視して自動コンパイル
+* `npm run test`    Jestユニットテストを実行
+* `npx cdk deploy`  デフォルトのAWSアカウント/リージョンにデプロイ
+* `npx cdk diff`    デプロイ済みスタックと現在の状態を比較
+* `npx cdk synth`   CloudFormationテンプレートを生成
+
+## APIエンドポイント
+
+- `GET /items` - 全アイテムの取得
+- `POST /items` - アイテムの作成
+- `GET /items/{id}` - 特定アイテムの取得
+- `DELETE /items/{id}` - アイテムの削除
+
+## API 定義書
+
+- openapi.jsonを参照。
+
+## AWS構成図
+
+- architecture.md を参照。
+- または、draw.ioで architecture-diagram.drawio を参照。
