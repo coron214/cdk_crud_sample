@@ -5,38 +5,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Items Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-gray-100 min-h-screen p-8">
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-3xl font-bold mb-8 text-gray-800">Items Manager</h1>
+<body class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen">
+    <div class="max-w-5xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+                Items Manager
+            </h1>
+            <p class="text-gray-600">Manage your items with ease</p>
+        </div>
         
-        <div class="bg-white rounded-lg shadow p-6 mb-6">
-            <h2 class="text-xl font-semibold mb-4">Create Item</h2>
-            <div class="flex gap-4">
-                <input type="text" id="itemId" placeholder="ID" class="flex-1 px-4 py-2 border rounded">
-                <input type="text" id="itemData" placeholder="Data" class="flex-1 px-4 py-2 border rounded">
-                <button onclick="createItem()" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">Create</button>
+        <!-- Create Item Card -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 mb-8 border border-gray-100 hover:shadow-2xl transition-shadow">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center mr-3">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800">新しいアイテムを作成</h2>
             </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <input type="text" id="itemId" placeholder="アイテムID" 
+                    class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:outline-none transition-colors">
+                <input type="text" id="itemData" placeholder="データ" 
+                    class="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-indigo-500 focus:outline-none transition-colors">
+            </div>
+            <button onclick="createItem()" 
+                class="w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-indigo-600 hover:to-purple-600 transform hover:scale-[1.02] transition-all shadow-lg">
+                作成する
+            </button>
         </div>
 
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-semibold">Items List</h2>
-                <button onclick="loadItems()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Refresh</button>
+        <!-- Items List Card -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">アイテム一覧</h2>
+                </div>
+                <button onclick="loadItems()" 
+                    class="bg-gray-100 text-gray-700 px-5 py-2 rounded-lg font-medium hover:bg-gray-200 transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    更新
+                </button>
             </div>
-            <div id="itemsList" class="space-y-2"></div>
+            <div id="itemsList" class="space-y-3"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-4 right-4 bg-white rounded-xl shadow-2xl p-4 transform translate-x-[400px] transition-transform duration-300 border-l-4 border-indigo-500">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+                <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <span id="toastMessage" class="font-medium text-gray-800"></span>
         </div>
     </div>
 
     <script>
         const API_URL = 'https://fejl332auf.execute-api.ap-northeast-1.amazonaws.com/prod';
 
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.style.transform = 'translateX(0)';
+            setTimeout(() => {
+                toast.style.transform = 'translateX(400px)';
+            }, 3000);
+        }
+
         async function createItem() {
-            const id = document.getElementById('itemId').value;
-            const data = document.getElementById('itemData').value;
+            const id = document.getElementById('itemId').value.trim();
+            const data = document.getElementById('itemData').value.trim();
             
             if (!id || !data) {
-                alert('Please fill in both fields');
+                showToast('IDとデータを入力してください');
                 return;
             }
 
@@ -50,21 +117,23 @@
                 if (response.ok) {
                     document.getElementById('itemId').value = '';
                     document.getElementById('itemData').value = '';
+                    showToast('アイテムを作成しました');
                     loadItems();
                 }
             } catch (error) {
-                alert('Error creating item: ' + error.message);
+                showToast('エラーが発生しました');
             }
         }
 
         async function deleteItem(id) {
-            if (!confirm('Delete this item?')) return;
+            if (!confirm('このアイテムを削除しますか？')) return;
             
             try {
                 await fetch(`${API_URL}/items/${id}`, { method: 'DELETE' });
+                showToast('アイテムを削除しました');
                 loadItems();
             } catch (error) {
-                alert('Error deleting item: ' + error.message);
+                showToast('エラーが発生しました');
             }
         }
 
@@ -75,23 +144,45 @@
                 
                 const list = document.getElementById('itemsList');
                 if (items.length === 0) {
-                    list.innerHTML = '<p class="text-gray-500">No items found</p>';
+                    list.innerHTML = `
+                        <div class="text-center py-12">
+                            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                            </svg>
+                            <p class="text-gray-500 text-lg">アイテムがありません</p>
+                        </div>
+                    `;
                     return;
                 }
                 
                 list.innerHTML = items.map(item => `
-                    <div class="flex justify-between items-center p-4 border rounded hover:bg-gray-50">
-                        <div>
-                            <span class="font-semibold">${item.id.S}</span>
-                            <span class="text-gray-600 ml-4">${item.data.S}</span>
+                    <div class="group flex justify-between items-center p-5 border-2 border-gray-100 rounded-xl hover:border-indigo-200 hover:shadow-md transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="font-bold text-gray-800 text-lg">${item.id.S}</div>
+                                <div class="text-gray-600">${item.data.S}</div>
+                            </div>
                         </div>
-                        <button onclick="deleteItem('${item.id.S}')" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Delete</button>
+                        <button onclick="deleteItem('${item.id.S}')" 
+                            class="bg-red-50 text-red-600 px-5 py-2 rounded-lg font-medium hover:bg-red-100 transition-colors opacity-0 group-hover:opacity-100">
+                            削除
+                        </button>
                     </div>
                 `).join('');
             } catch (error) {
-                alert('Error loading items: ' + error.message);
+                showToast('エラーが発生しました');
             }
         }
+
+        // Enter key support
+        document.getElementById('itemData').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') createItem();
+        });
 
         loadItems();
     </script>
