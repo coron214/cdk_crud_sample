@@ -2,6 +2,10 @@
 
 TypeScriptを使用したAWS CDKプロジェクトです。
 
+## Webサイト
+
+http://cdkcrudstack-websitebucket75c24d94-akbgd6ywvyun.s3-website-ap-northeast-1.amazonaws.com/
+
 ## アーキテクチャ
 
 このプロジェクトは以下のAWSリソースで構成されています：
